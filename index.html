@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="header">
-        <h2>Cryptography Toolbox (Work in Progress)</h2>
+        <h2>Cryptography Toolbox (Work in Progress) v0.2</h2>
     </div>
 
     <!-- TODO put a counter for number of shifts on caesar cipher -->
@@ -22,11 +22,14 @@
             <li><button onclick="showDescription('Blowfish')">Blowfish Cipher</button></li>
         </ul>
     </div>
-
+    <!-- TODO add case options ALL CAPS, retain, all lowercase -->
     <div class="main_box">
         <div class="encrypt_box">
             <textarea name="encrypt" id="encrypt" class="encrypt_text" placeholder="Insert text to encrypt here"></textarea>
-            <button class="clear" onclick="document.getElementById('encrypt').value = '';">Clear</button>
+            <div class="btn_space">
+                <button class="clear" onclick="document.getElementById('encrypt').value = '';">Clear</button>
+                <div id="extra_btns_space1" class="extra_btns_space"></div>
+            </div>
         </div>
 
         <div class="arrow">
@@ -37,8 +40,10 @@
 
         <div class="decrypt_box">
             <textarea name="decrypt" id="decrypt" class="decrypt_text" placeholder="Insert text to decrypt here"></textarea>
+            <div class="btn_space">
             <button class="clear" onclick="document.getElementById('decrypt').value = '';">Clear</button>
-
+            <div id="extra_btns_space2" class="extra_btns_space"></div>
+            </div>
         </div>
     </div>
 
@@ -48,7 +53,10 @@
     </div>
 
     <div class="footer">
-        <p title="Created by: Adriel M.">Cryptography Toolbox &copy; 2025</p>
+        <p title="made with spite and many sleepless nights 🩶">Cryptography Toolbox &copy; 2025</p>
+        <button id="about" class="about" onclick="
+            alert('Created and Designed by:\nAdriel P.\nAbby M.\n\nand others\n\nSpecial Thanks to:\nno one');
+        ">About</button>
     </div>
 
 
@@ -66,151 +74,98 @@
         document.getElementById('go').textContent = 'Decrypt';
         });
 
-        // description box
-        function showDescription(mode) {
-            let title = '';
-            let desc = '';
-
-            if (mode === 'Caesar') {
-                title = 'Caesar Cipher';
-                desc = 'The Caesar Cipher is a simple substitution cipher where each letter in the plaintext is shifted by a fixed number of positions down the alphabet. It is one of the oldest known encryption techniques and is easy to both encrypt and decrypt with the correct shift value.';
-            } else if (mode === 'Atbash') {
-                title = 'Atbash Cipher';
-                desc = 'The Atbash Cipher is a monoalphabetic substitution cipher that reverses the standard alphabet, so the first letter becomes the last, the second becomes the second to last, and so on. It is a simple and ancient cipher, often used for basic obfuscation.';
-            } else if (mode === 'Vigenere') {
-                title = 'Vigenère Cipher';
-                desc = 'The Vigenère Cipher is a polyalphabetic substitution cipher that uses a keyword to determine the shift for each letter in the plaintext. This makes it more secure than simple ciphers, as the pattern of encryption changes throughout the message.';
-            } else if (mode === 'RSA') {
-                title = 'RSA Cipher';
-                desc = 'RSA is a modern asymmetric encryption algorithm that uses a pair of keys: a public key for encryption and a private key for decryption. It is widely used for secure data transmission, digital signatures, and cryptographic protocols.';
-            } else if (mode === 'AES') {
-                title = 'AES (Advanced Encryption Standard)';
-                desc = 'AES is a symmetric block cipher that encrypts data in fixed-size blocks using a shared secret key. It is the standard for secure data encryption worldwide, known for its speed, security, and efficiency in both hardware and software.';
-            } else if (mode === 'Blowfish') {
-                title = 'Blowfish Cipher';
-                desc = 'Blowfish is a symmetric-key block cipher designed for fast and secure encryption. It features a variable-length key and is known for its simplicity and effectiveness, making it suitable for a wide range of applications.';
-            } else {
-                title = 'Unknown Mode';
-                desc = 'No description available.';
-            }
-
-            document.getElementById('desc_mode').textContent = title;
-            document.getElementById('desc_text').textContent = desc;
+        // for the shift buttons on caesar mode
+        function changeShift(id, delta) {
+            const input = document.getElementById(id);
+            let value = parseInt(input.value, 10) || 1;
+            value += delta;
+            if (value < parseInt(input.min)) value = parseInt(input.min);
+            if (value > parseInt(input.max)) value = parseInt(input.max);
+            input.value = value;
+        }
+   
+        // clear extra buttons when switching modes
+        function clearExtraBtns() {
+            document.getElementById('extra_btns_space1').innerHTML = '';
+            document.getElementById('extra_btns_space2').innerHTML = '';
         }
 
-        // bg cycler
-        window.onload = function() {
-            const images = [
-                '1.jpg',
-                '2.jpg',
-                '3.jpg',
-                '4.jpg',
-                '5.jpg',
-                '6.jpg',
-                ];
-
-            const randomImage = images[Math.floor(Math.random() * images.length)];
-
-            document.body.style.backgroundImage = `url('./assets/${randomImage}')`;
-            document.body.style.backgroundSize = 'cover';
-            document.body.style.backgroundRepeat = 'no-repeat';
-            document.body.style.backgroundPosition = 'center';
-            };
-
-    </script>
-</body>
-</html>
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="./index.css">
-    <title>Cryptography Toolbox</title>
-</head>
-<body>
-    <div class="header">
-        <h2>Cryptography Toolbox (Work in Progress)</h2>
-    </div>
-
-    <!-- TODO put a counter for number of shifts on caesar cipher -->
-    <div class="modes_box">
-        <ul class="modes_list" id="modes_list">
-            <li><button onclick="showDescription('Caesar')">Caesar Cipher</button></li>
-            <li><button onclick="showDescription('Atbash')">Atbash Cipher</button></li>
-            <li><button onclick="showDescription('Vigenere')">Vigenère Cipher</button></li>
-            <li><button onclick="showDescription('RSA')">RSA Cipher</button></li>
-            <li><button onclick="showDescription('AES')">AES (Advanced Encryption Standard)</button></li>
-            <li><button onclick="showDescription('Blowfish')">Blowfish Cipher</button></li>
-        </ul>
-    </div>
-
-    <div class="main_box">
-        <div class="encrypt_box">
-            <textarea name="encrypt" id="encrypt" class="encrypt_text" placeholder="Insert text to encrypt here"></textarea>
-            <button class="clear" onclick="document.getElementById('encrypt').value = '';">Clear</button>
-        </div>
-
-        <div class="arrow">
-            <img src="./assets/arrow_right.png" alt="Right Arrow" height="50" width="50" class="arrow_img" id="arrow_img">
-            <button id="go" class="go">Encrypt</button>
-            <!-- TODO this will change to Encrypt/Decrypt dpending on selected mode -->
-        </div>
-
-        <div class="decrypt_box">
-            <textarea name="decrypt" id="decrypt" class="decrypt_text" placeholder="Insert text to decrypt here"></textarea>
-            <button class="clear" onclick="document.getElementById('decrypt').value = '';">Clear</button>
-
-        </div>
-    </div>
-
-    <div class="description_box">
-        <h3 id="desc_mode" class="desc_mode">Please Select A Cipher Mode</h3>
-        <p id="desc_text" class="desc_text">(Mode Description)</p>
-    </div>
-
-    <div class="footer">
-        <p title="Created by: Adriel M.">Cryptography Toolbox &copy; 2025</p>
-    </div>
-
-
-    <script>
-
-        // click on left box
-        document.getElementById('encrypt').addEventListener('click', function() {
-        document.getElementById('arrow_img').src = './assets/arrow_right.png';
-        document.getElementById('go').textContent = 'Encrypt';
-        });
-
-        // click on right box
-        document.getElementById('decrypt').addEventListener('click', function() {
-        document.getElementById('arrow_img').src = './assets/arrow_left.png';
-        document.getElementById('go').textContent = 'Decrypt';
-        });
-
-        // description box
+        // description box + extra buttons for each mode
         function showDescription(mode) {
+            clearExtraBtns()
             let title = '';
             let desc = '';
 
             if (mode === 'Caesar') {
                 title = 'Caesar Cipher';
                 desc = 'The Caesar Cipher is a simple substitution cipher where each letter in the plaintext is shifted by a fixed number of positions down the alphabet. It is one of the oldest known encryption techniques and is easy to both encrypt and decrypt with the correct shift value.';
+                
+                document.querySelectorAll('.extra_btns_space').forEach((el, i) => {
+                    const inputId = `shift_counter${i+1}`;
+                    el.innerHTML = `
+                        <label style="color:#ffb700;margin-right:5px;">Shift:</label>
+                        <button type="button" class="shift-btn" onclick="changeShift('${inputId}', -1)">&#8722;</button>
+                        <input type="number" id="${inputId}" value="3" min="1" max="25" class="shift-input">
+                        <button type="button" class="shift-btn" onclick="changeShift('${inputId}', 1)">&#43;</button>
+                    `;
+                });
+
             } else if (mode === 'Atbash') {
                 title = 'Atbash Cipher';
                 desc = 'The Atbash Cipher is a monoalphabetic substitution cipher that reverses the standard alphabet, so the first letter becomes the last, the second becomes the second to last, and so on. It is a simple and ancient cipher, often used for basic obfuscation.';
             } else if (mode === 'Vigenere') {
                 title = 'Vigenère Cipher';
                 desc = 'The Vigenère Cipher is a polyalphabetic substitution cipher that uses a keyword to determine the shift for each letter in the plaintext. This makes it more secure than simple ciphers, as the pattern of encryption changes throughout the message.';
+            
+                document.querySelectorAll('.extra_btns_space').forEach((el, i) => {
+                    el.innerHTML = `
+                        <label for="vigenere_keyword${i+1}" style="color:#ffb700;margin-right:5px;">Keyword:</label>
+                        <input type="text" id="vigenere_keyword${i+1}" class="vigenere-input" value="KEY" maxlength="20" style="width:100px;">
+                    `;
+                });
+            
             } else if (mode === 'RSA') {
                 title = 'RSA Cipher';
                 desc = 'RSA is a modern asymmetric encryption algorithm that uses a pair of keys: a public key for encryption and a private key for decryption. It is widely used for secure data transmission, digital signatures, and cryptographic protocols.';
+            
+                // Public key (encryption) inputs in extra_btns_space1
+                document.getElementById('extra_btns_space1').innerHTML = `
+                    <label for="rsa_modulo1" style="color:#ffb700;margin-right:5px;">Modulo:</label>
+                    <input type="text" id="rsa_modulo1" class="rsa-input" value="3233" placeholder="modulo" style="width:90px;">
+                    <label for="rsa_public1" style="color:#ffb700;margin:0 5px 0 10px;">Public Key:</label>
+                    <input type="text" id="rsa_public1" class="rsa-input" value="17" placeholder="public exp" style="width:60px;">
+                `;
+
+                // Private key (decryption) inputs in extra_btns_space2
+                document.getElementById('extra_btns_space2').innerHTML = `
+                    <label for="rsa_modulo2" style="color:#ffb700;margin-right:5px;">Modulo:</label>
+                    <input type="text" id="rsa_modulo2" class="rsa-input" value="3233" placeholder="modulo" style="width:90px;">
+                    <label for="rsa_private2" style="color:#ffb700;margin:0 5px 0 10px;">Private Key:</label>
+                    <input type="text" id="rsa_private2" class="rsa-input" value="413" placeholder="private exp" style="width:60px;">
+                `;
+            
             } else if (mode === 'AES') {
                 title = 'AES (Advanced Encryption Standard)';
                 desc = 'AES is a symmetric block cipher that encrypts data in fixed-size blocks using a shared secret key. It is the standard for secure data encryption worldwide, known for its speed, security, and efficiency in both hardware and software.';
+            
+                document.querySelectorAll('.extra_btns_space').forEach((el, i) => {
+                    el.innerHTML = `
+                        <label for="aes_key${i+1}" style="color:#ffb700;margin-right:5px;">Key:</label>
+                        <input type="text" id="aes_key${i+1}" class="aes-input" value="mysecretkey12345" maxlength="32" placeholder="key" style="width:140px;">
+                    `;
+                });
+            
             } else if (mode === 'Blowfish') {
                 title = 'Blowfish Cipher';
                 desc = 'Blowfish is a symmetric-key block cipher designed for fast and secure encryption. It features a variable-length key and is known for its simplicity and effectiveness, making it suitable for a wide range of applications.';
+            
+                document.querySelectorAll('.extra_btns_space').forEach((el, i) => {
+                    el.innerHTML = `
+                        <label for="blowfish_key${i+1}" style="color:#ffb700;margin-right:5px;">Key:</label>
+                        <input type="text" id="blowfish_key${i+1}" class="blowfish-input" value="myblowfishkey" maxlength="56" placeholder="key" style="width:140px;">
+                    `;
+                });
+
             } else {
                 title = 'Unknown Mode';
                 desc = 'No description available.';
