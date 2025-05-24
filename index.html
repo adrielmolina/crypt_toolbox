@@ -120,3 +120,125 @@
     </script>
 </body>
 </html>
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="./index.css">
+    <title>Cryptography Toolbox</title>
+</head>
+<body>
+    <div class="header">
+        <h2>Cryptography Toolbox (Work in Progress)</h2>
+    </div>
+
+    <!-- TODO put a counter for number of shifts on caesar cipher -->
+    <div class="modes_box">
+        <ul class="modes_list" id="modes_list">
+            <li><button onclick="showDescription('Caesar')">Caesar Cipher</button></li>
+            <li><button onclick="showDescription('Atbash')">Atbash Cipher</button></li>
+            <li><button onclick="showDescription('Vigenere')">Vigenère Cipher</button></li>
+            <li><button onclick="showDescription('RSA')">RSA Cipher</button></li>
+            <li><button onclick="showDescription('AES')">AES (Advanced Encryption Standard)</button></li>
+            <li><button onclick="showDescription('Blowfish')">Blowfish Cipher</button></li>
+        </ul>
+    </div>
+
+    <div class="main_box">
+        <div class="encrypt_box">
+            <textarea name="encrypt" id="encrypt" class="encrypt_text" placeholder="Insert text to encrypt here"></textarea>
+            <button class="clear" onclick="document.getElementById('encrypt').value = '';">Clear</button>
+        </div>
+
+        <div class="arrow">
+            <img src="./assets/arrow_right.png" alt="Right Arrow" height="50" width="50" class="arrow_img" id="arrow_img">
+            <button id="go" class="go">Encrypt</button>
+            <!-- TODO this will change to Encrypt/Decrypt dpending on selected mode -->
+        </div>
+
+        <div class="decrypt_box">
+            <textarea name="decrypt" id="decrypt" class="decrypt_text" placeholder="Insert text to decrypt here"></textarea>
+            <button class="clear" onclick="document.getElementById('decrypt').value = '';">Clear</button>
+
+        </div>
+    </div>
+
+    <div class="description_box">
+        <h3 id="desc_mode" class="desc_mode">Please Select A Cipher Mode</h3>
+        <p id="desc_text" class="desc_text">(Mode Description)</p>
+    </div>
+
+    <div class="footer">
+        <p title="Created by: Adriel M.">Cryptography Toolbox &copy; 2025</p>
+    </div>
+
+
+    <script>
+
+        // click on left box
+        document.getElementById('encrypt').addEventListener('click', function() {
+        document.getElementById('arrow_img').src = './assets/arrow_right.png';
+        document.getElementById('go').textContent = 'Encrypt';
+        });
+
+        // click on right box
+        document.getElementById('decrypt').addEventListener('click', function() {
+        document.getElementById('arrow_img').src = './assets/arrow_left.png';
+        document.getElementById('go').textContent = 'Decrypt';
+        });
+
+        // description box
+        function showDescription(mode) {
+            let title = '';
+            let desc = '';
+
+            if (mode === 'Caesar') {
+                title = 'Caesar Cipher';
+                desc = 'The Caesar Cipher is a simple substitution cipher where each letter in the plaintext is shifted by a fixed number of positions down the alphabet. It is one of the oldest known encryption techniques and is easy to both encrypt and decrypt with the correct shift value.';
+            } else if (mode === 'Atbash') {
+                title = 'Atbash Cipher';
+                desc = 'The Atbash Cipher is a monoalphabetic substitution cipher that reverses the standard alphabet, so the first letter becomes the last, the second becomes the second to last, and so on. It is a simple and ancient cipher, often used for basic obfuscation.';
+            } else if (mode === 'Vigenere') {
+                title = 'Vigenère Cipher';
+                desc = 'The Vigenère Cipher is a polyalphabetic substitution cipher that uses a keyword to determine the shift for each letter in the plaintext. This makes it more secure than simple ciphers, as the pattern of encryption changes throughout the message.';
+            } else if (mode === 'RSA') {
+                title = 'RSA Cipher';
+                desc = 'RSA is a modern asymmetric encryption algorithm that uses a pair of keys: a public key for encryption and a private key for decryption. It is widely used for secure data transmission, digital signatures, and cryptographic protocols.';
+            } else if (mode === 'AES') {
+                title = 'AES (Advanced Encryption Standard)';
+                desc = 'AES is a symmetric block cipher that encrypts data in fixed-size blocks using a shared secret key. It is the standard for secure data encryption worldwide, known for its speed, security, and efficiency in both hardware and software.';
+            } else if (mode === 'Blowfish') {
+                title = 'Blowfish Cipher';
+                desc = 'Blowfish is a symmetric-key block cipher designed for fast and secure encryption. It features a variable-length key and is known for its simplicity and effectiveness, making it suitable for a wide range of applications.';
+            } else {
+                title = 'Unknown Mode';
+                desc = 'No description available.';
+            }
+
+            document.getElementById('desc_mode').textContent = title;
+            document.getElementById('desc_text').textContent = desc;
+        }
+
+        // bg cycler
+        window.onload = function() {
+            const images = [
+                '1.jpg',
+                '2.jpg',
+                '3.jpg',
+                '4.jpg',
+                '5.jpg',
+                '6.jpg',
+                ];
+
+            const randomImage = images[Math.floor(Math.random() * images.length)];
+
+            document.body.style.backgroundImage = `url('./assets/${randomImage}')`;
+            document.body.style.backgroundSize = 'cover';
+            document.body.style.backgroundRepeat = 'no-repeat';
+            document.body.style.backgroundPosition = 'center';
+            };
+
+    </script>
+</body>
+</html>
