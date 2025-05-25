@@ -47,16 +47,45 @@ div:not(.main_box):not(.btn_space):not(.extra_btns_space) {
     color: var(--text_color);
 }
 
+.modes_box {
+    margin: 0px 15% 0px 15% !important;
+    height: 10vh !important;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.modes_list  {
+    list-style: none;         /* Remove bullets */
+    padding: 0;               /* Remove default padding */
+    margin: 1%;                /* Remove default margin */
+    display: flex;            /* Make list horizontal */
+    gap: 20px;
+    justify-content: center;
+    height: 100%;
+    align-items: stretch;
+    justify-content: center;
+}
+
+.modes_list li {
+    height: 100% !important;
+    display: flex;
+    align-items: center;
+}
+
 .modes_list li button {
     background-color: #3a3a8a;
     color: #ffffff;
     border-radius: 10px;
-
     border: none;
-
-    padding: 5px;
-    height: auto;
-    width: auto;
+    font-size: 1.1em;
+    padding: 0 10%;
+    height: 70%;
+    width: 100%;
+    box-sizing: border-box;
+    display: flex;
+    align-items: center;
+    justify-content: center;
 }
 .modes_list li button:hover {
     background-color: #5a5a8a;
@@ -148,19 +177,6 @@ div:not(.main_box):not(.btn_space):not(.extra_btns_space) {
     width: 100% !important;
     height: 100% !important;
 
-}
-
-.modes_box {
-    margin: 0px 15% 0px 15% !important;
-}
-
-.modes_list  {
-    list-style: none;         /* Remove bullets */
-    padding: 0;               /* Remove default padding */
-    margin: 1%;                /* Remove default margin */
-    display: flex;            /* Make list horizontal */
-    gap: 10px;
-    justify-content: center;  
 }
 
 .main_box {
