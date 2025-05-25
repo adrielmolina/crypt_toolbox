@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="header">
-        <h2>Cryptography Toolbox (Work in Progress) v0.3</h2>
+        <h2>Cryptography Toolbox (Work in Progress) v0.4</h2>
     </div>
 
     <!-- TODO put a counter for number of shifts on caesar cipher -->
@@ -49,7 +49,7 @@
 
     <div class="description_box">
         <h3 id="desc_mode" class="desc_mode">Please Select A Cipher Mode</h3>
-        <p id="desc_text" class="desc_text">(Mode Description)</p>
+        <p id="desc_text" class="desc_text"></p>
     </div>
 
     <div class="footer">
@@ -89,6 +89,14 @@
             document.getElementById('extra_btns_space1').innerHTML = '';
             document.getElementById('extra_btns_space2').innerHTML = '';
         }
+
+        // active mode listener
+        document.querySelectorAll('.modes_list button').forEach(btn => {
+                btn.addEventListener('click', function() {
+                    document.querySelectorAll('.modes_list button').forEach(b => b.classList.remove('mode-selected'));
+                    this.classList.add('mode-selected');
+                });
+        });
 
         // description box + extra buttons for each mode
         function showDescription(mode) {
