@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="header">
-        <h2>Cryptography Toolbox (Work in Progress) v0.5</h2>
+        <h2>Cryptography Toolbox (Work in Progress) v0.6</h2>
     </div>
 
     <div class="modes_box">
@@ -18,7 +18,7 @@
             <li><button onclick="showDescription('Vigenere')">Vigenère Cipher</button></li>
             <li><button onclick="showDescription('RSA')">RSA Cipher</button></li>
             <li><button onclick="showDescription('AES')">AES (Advanced Encryption Standard)</button></li>
-            <li><button onclick="showDescription('Blowfish')">Blowfish Cipher</button></li>
+            <!-- <li><button onclick="showDescription('Blowfish')">Blowfish Cipher</button></li> -->
         </ul>
     </div>
 
@@ -34,7 +34,6 @@
         <div class="arrow">
             <img src="./assets/arrow_right.png" alt="Right Arrow" height="50" width="50" class="arrow_img" id="arrow_img">
             <button id="go" class="go">Encrypt</button>
-            <!-- TODO this will change to Encrypt/Decrypt dpending on selected mode -->
         </div>
 
         <div class="decrypt_box">
@@ -52,25 +51,31 @@
     </div>
 
     <div class="footer">
-        <p title="made with spite and many sleepless nights 🩶">Cryptography Toolbox &copy; 2025</p>
+        <p title="made with spite and many sleepless nights 🩶">Cryptography Toolbox &copy; 2025    |   CVSU-CCC    |   BSIT-3C    |    ITEC106 FINAL PROJECT</p>
         <button id="about" class="about" onclick="
             alert('Created and Designed by:\nAdriel P.\nAbby M.\n\nand others\n\nSpecial Thanks to:\nno one');
         ">About</button>
     </div>
 
-
+    <script src="https://cdn.jsdelivr.net/npm/node-forge@1.0.0/dist/forge.min.js"></script>
+    <script src="/ciphers.js"></script>
     <script>
+
+        // encrypt or decrypt mode
+        let enc_dec = null;
 
         // click on left box
         document.getElementById('encrypt').addEventListener('click', function() {
         document.getElementById('arrow_img').src = './assets/arrow_right.png';
         document.getElementById('go').textContent = 'Encrypt';
+        enc_dec = 'Encrypt';
         });
 
         // click on right box
         document.getElementById('decrypt').addEventListener('click', function() {
         document.getElementById('arrow_img').src = './assets/arrow_left.png';
         document.getElementById('go').textContent = 'Decrypt';
+        enc_dec = 'Decrypt';
         });
 
         // for the shift buttons on caesar mode
@@ -97,8 +102,12 @@
                 });
         });
 
+        // variable for the currently sel. mode
+        let selectedMode = null;
+
         // description box + extra buttons for each mode
         function showDescription(mode) {
+            selectedMode = mode;
             clearExtraBtns()
             let title = '';
             let desc = '';
@@ -158,7 +167,7 @@
                 document.querySelectorAll('.extra_btns_space').forEach((el, i) => {
                     el.innerHTML = `
                         <label for="aes_key${i+1}" style="color:#ffb700;margin-right:5px;">Key:</label>
-                        <input type="text" id="aes_key${i+1}" class="aes-input" value="mysecretkey12345" maxlength="32" placeholder="key" style="width:140px;">
+                        <input type="text" id="aes_key${i+1}" class="aes-input" value="secretkey1234567" maxlength="16" placeholder="key" style="width:140px;">
                     `;
                 });
             
@@ -169,7 +178,7 @@
                 document.querySelectorAll('.extra_btns_space').forEach((el, i) => {
                     el.innerHTML = `
                         <label for="blowfish_key${i+1}" style="color:#ffb700;margin-right:5px;">Key:</label>
-                        <input type="text" id="blowfish_key${i+1}" class="blowfish-input" value="myblowfishkey" maxlength="56" placeholder="key" style="width:140px;">
+                        <input type="text" id="blowfish_key${i+1}" class="blowfish-input" value="blowfishkey12345" maxlength="16" placeholder="key" style="width:140px;">
                     `;
                 });
 
@@ -181,6 +190,120 @@
             document.getElementById('desc_mode').textContent = title;
             document.getElementById('desc_text').textContent = desc;
         }
+
+        document.getElementById('go').addEventListener('click', function() {
+            const goMode = enc_dec;
+            const selMode = selectedMode;
+            let text;
+
+            // check for action mode
+            if (goMode === 'Encrypt') {
+                text = document.getElementById('encrypt').value;
+            } else if (goMode === 'Decrypt') {
+                text = document.getElementById('decrypt').value;
+            } else {
+                alert('Please select a mode and an action (Encrypt/Decrypt) before proceeding.');
+                return;
+            }
+            
+            //check for selected mode
+            if (selMode === 'Caesar') {
+                if (goMode === 'Encrypt') {
+                    const shift = parseInt(document.getElementById('shift_counter1').value, 10);
+                    const encryptedText = caesarCipher(text, shift);
+                    document.getElementById('decrypt').value = encryptedText;
+                } else if (goMode === 'Decrypt') {
+                    const shift = parseInt(document.getElementById('shift_counter2').value, 10);
+                    const decryptedText = caesarCipher(text, -shift);
+                    document.getElementById('encrypt').value = decryptedText;
+                }
+
+
+            } else if (selMode === 'Atbash') {
+               if (goMode === 'Encrypt') {
+                    const encryptedText = atbashCipher(text);
+                    document.getElementById('decrypt').value = encryptedText;
+                } else if (goMode === 'Decrypt') {
+                    const decryptedText = atbashCipher(text);
+                    document.getElementById('encrypt').value = decryptedText;
+                }
+            } else if (selMode === 'Vigenere') {
+                const key = document.getElementById(goMode === 'Encrypt' ? 'vigenere_keyword1' : 'vigenere_keyword2').value;
+                if (goMode === 'Encrypt') {
+                    const encryptedText = vigenereCipher(text, key);
+                    document.getElementById('decrypt').value = encryptedText;
+                } else if (goMode === 'Decrypt') {
+                    const decryptedText = vigenereCipher(text, key, true);
+                    document.getElementById('encrypt').value = decryptedText;
+                }
+            
+            } else if (selMode === 'RSA') {
+                if (goMode === 'Encrypt') {
+                    const n = document.getElementById('rsa_modulo1').value;
+                    const e = document.getElementById('rsa_public1').value;
+                    const encryptedText = rsaEncrypt(text, n, e);
+                    document.getElementById('decrypt').value = encryptedText;
+                } else if (goMode === 'Decrypt') {
+                    const n = document.getElementById('rsa_modulo2').value;
+                    const d = document.getElementById('rsa_private2').value;
+                    const decryptedText = rsaDecrypt(text, n, d);
+                    document.getElementById('encrypt').value = decryptedText;
+                }
+            
+            } else if (selMode === 'AES') {
+                const key = document.getElementById(goMode === 'Encrypt' ? 'aes_key1' : 'aes_key2').value;
+                if (goMode === 'Encrypt') {
+                    // Encrypt
+                    const cipher = forge.cipher.createCipher('AES-ECB', forge.util.createBuffer(key));
+                    cipher.start();
+                    cipher.update(forge.util.createBuffer(text, 'utf8'));
+                    cipher.finish();
+                    const encrypted = cipher.output.getBytes();
+                    // Encode to base64 for display
+                    const encryptedText = forge.util.encode64(encrypted);
+                    document.getElementById('decrypt').value = encryptedText;
+                } else if (goMode === 'Decrypt') {
+                    // Decrypt
+                    const decipher = forge.cipher.createDecipher('AES-ECB', forge.util.createBuffer(key));
+                    decipher.start();
+                    // Decode from base64
+                    decipher.update(forge.util.createBuffer(forge.util.decode64(text)));
+                    decipher.finish();
+                    const decryptedText = decipher.output.toString('utf8');
+                    document.getElementById('encrypt').value = decryptedText;
+                }               
+            
+            } else if (selMode === 'Blowfish') {
+                const key = document.getElementById(goMode === 'Encrypt' ? 'blowfish_key1' : 'blowfish_key2').value;
+                if (goMode === 'Encrypt') {
+                    // Pad text to multiple of 8 bytes (Blowfish block size)
+                    let padded = text;
+                    while (forge.util.encodeUtf8(padded).length % 8 !== 0) padded += ' ';
+                    const cipher = forge.cipher.createCipher('BF-ECB', forge.util.createBuffer(forge.util.encodeUtf8(key)));
+                    cipher.start();
+                    cipher.update(forge.util.createBuffer(forge.util.encodeUtf8(padded)));
+                    cipher.finish();
+                    const encrypted = cipher.output.getBytes();
+                    const encryptedText = forge.util.encode64(encrypted);
+                    document.getElementById('decrypt').value = encryptedText;
+                } else if (goMode === 'Decrypt') {
+                    const decipher = forge.cipher.createDecipher('BF-ECB', forge.util.createBuffer(forge.util.encodeUtf8(key)));
+                    decipher.start();
+                    decipher.update(forge.util.createBuffer(forge.util.decode64(text)));
+                    decipher.finish();
+                    // Remove padding spaces
+                    const decryptedText = decipher.output.toString('utf8').replace(/\s+$/g, '');
+                    document.getElementById('encrypt').value = decryptedText;
+
+                    
+                }
+                console.log('Encrypted:', encryptedText);
+                console.log('Decrypted:', decryptedText);
+            } else {
+                alert('Please select a mode before proceeding.');
+                return;
+            }
+        });
 
         // bg cycler
         window.onload = function() {
