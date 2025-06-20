@@ -8,7 +8,7 @@
 </head>
 <body>
     <div class="header">
-        <h2>Cryptography Toolbox (Work in Progress) v0.6</h2>
+        <h2>Cryptography Toolbox v1.6</h2>
     </div>
 
     <div class="modes_box">
